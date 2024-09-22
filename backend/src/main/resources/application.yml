@@ -1,5 +1,7 @@
 spring:
   # MySQL 관련 설정
+  profiles:
+    active: secret
   application:
     name: backend
   jpa:
@@ -12,18 +14,8 @@ spring:
       enabled: true
       max-file-size: 15MB
       max-request-size: 15MB
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/look4me?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    #    username: admin
-    #    password: zzknu123!
-    username: root
-    password: dntjr3500
-    hikari:
-      max-lifetime: 170000
-
-#  config:
-#    additional-location: classpath:application-secret.yml
+  config:
+    additional-location: classpath:application-secret.yml
 logging:
   level:
     org.hibernate.SQL: DEBUG

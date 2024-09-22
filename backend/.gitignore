@@ -36,3 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
+### Ignore DB Password
+src/main/resources/application-secret.yml
