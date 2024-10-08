@@ -16,10 +16,23 @@ spring:
       max-request-size: 15MB
   config:
     additional-location: classpath:application-secret.yml
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE.CLIENT-ID}
+            client-secret: ${GOOGLE.CLIENT-SECRET}
+            redirect-uri: ${GOOGLE.REDIRECT-URI}
+            scope:
+              - email
+              - profile
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type: TRACE
+
 server:
   servlet:
     encoding:
