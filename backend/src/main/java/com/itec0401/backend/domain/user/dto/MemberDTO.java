@@ -1,4 +1,4 @@
-package com.itec0401.backend.member.dto;
+package com.itec0401.backend.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginRequestDTO {
+public class MemberDTO {
+    private String name;
     private String email;
+    private String nickName;
     private String password;
 }

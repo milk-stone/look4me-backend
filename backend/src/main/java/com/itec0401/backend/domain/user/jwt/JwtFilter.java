@@ -1,4 +1,4 @@
-package com.itec0401.backend.member.jwt;
+package com.itec0401.backend.domain.user.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

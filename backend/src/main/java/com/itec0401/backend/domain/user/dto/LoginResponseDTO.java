@@ -1,4 +1,4 @@
-package com.itec0401.backend.member.dto;
+package com.itec0401.backend.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,13 +1,13 @@
-package com.itec0401.backend.member.service;
+package com.itec0401.backend.domain.user.service;
 
-import com.itec0401.backend.member.dto.LoginRequestDTO;
-import com.itec0401.backend.member.dto.LoginResponseDTO;
-import com.itec0401.backend.member.dto.MemberDTO;
-import com.itec0401.backend.member.entity.MemberEntity;
-import com.itec0401.backend.member.jwt.JwtTokenProvider;
-import com.itec0401.backend.member.repository.MemberRepository;
+import com.itec0401.backend.domain.user.dto.LoginRequestDTO;
+import com.itec0401.backend.domain.user.dto.LoginResponseDTO;
+import com.itec0401.backend.domain.user.dto.MemberDTO;
+import com.itec0401.backend.domain.user.dto.UserInfoDto;
+import com.itec0401.backend.domain.user.entity.User;
+import com.itec0401.backend.domain.user.jwt.JwtTokenProvider;
+import com.itec0401.backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,17 +17,25 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
-public class MemberServiceImpl implements MemberService{
-
+public class UserServiceImpl implements UserService{
+    private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public UserInfoDto getUserProfile(Long id){
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null){
+            return null;
+        }
+        else {
+            return UserInfoDto.toDto(user);
+        }
+    }
 
     @Override
     public ResponseEntity<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO) {
         //AccessToken 만들어서 줘야함
-        Optional<MemberEntity> byEmail = memberRepository.findByEmail(loginRequestDTO.getEmail());
+        Optional<User> byEmail = userRepository.findByEmail(loginRequestDTO.getEmail());
         if (byEmail.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else if (!passwordEncoder.matches(loginRequestDTO.getPassword(), byEmail.get().getPassword())) {
@@ -47,9 +55,10 @@ public class MemberServiceImpl implements MemberService{
             String encoded = passwordEncoder.encode(memberDTO.getPassword());
 
             // 회원 저장
-            MemberEntity saved = memberRepository.save(MemberEntity.builder()
+            User saved = userRepository.save(User.builder()
+                    .name(memberDTO.getName())
                     .email(memberDTO.getEmail())
-                    .username(memberDTO.getUsername())
+                    .nickname(memberDTO.getNickName())
                     .password(encoded)
                     .build());
 
@@ -57,12 +66,13 @@ public class MemberServiceImpl implements MemberService{
             return new ResponseEntity<>("회원가입 완료", HttpStatus.OK); // 성공 시 200 반환
         } catch (Exception e) {
             // 예외 발생 시 처리
+            System.out.println("e = " + e);
             return new ResponseEntity<>("회원가입 실패", HttpStatus.BAD_REQUEST); // 이메일 조회 후 회원가입 할것
         }
     }
 
     @Override
-    public ResponseEntity<Boolean> checkEmail(String email) {
-        return new ResponseEntity<>(memberRepository.findByEmail(email).isPresent(), HttpStatus.OK);
+    public ResponseEntity<Boolean> isEmailEmpty(String email) {
+        return new ResponseEntity<>(userRepository.findByEmail(email).isEmpty(), HttpStatus.OK);
     }
 }
