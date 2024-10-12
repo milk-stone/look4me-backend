@@ -32,6 +32,8 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type: TRACE
+    org.springframework.security: TRACE
+
 
 server:
   servlet:
