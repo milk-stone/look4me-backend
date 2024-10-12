@@ -1,24 +1,14 @@
 package com.itec0401.backend.domain.user.service;
 
+import com.itec0401.backend.domain.user.dto.LoginRequestDTO;
+import com.itec0401.backend.domain.user.dto.LoginResponseDTO;
+import com.itec0401.backend.domain.user.dto.MemberDTO;
 import com.itec0401.backend.domain.user.dto.UserInfoDto;
-import com.itec0401.backend.domain.user.entity.User;
-import com.itec0401.backend.domain.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
-    private final UserRepository userRepository;
-
-    public UserInfoDto getUserProfile(Long id){
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null){
-            return null;
-        }
-        else {
-            return UserInfoDto.toDto(user);
-        }
-    }
-
+public interface UserService {
+    UserInfoDto getUserProfile(Long id);
+    ResponseEntity<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO);
+    ResponseEntity<String> signIn(MemberDTO memberDTO);
+    ResponseEntity<Boolean> isEmailEmpty(String email);
 }

@@ -6,6 +6,7 @@ import com.itec0401.backend.domain.usercolor.entity.UserColor;
 import com.itec0401.backend.domain.userstyle.entity.UserStyle;
 import com.itec0401.backend.global.BaseEntityWithUpdatedAt;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User extends BaseEntityWithUpdatedAt {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -26,10 +29,14 @@ public class User extends BaseEntityWithUpdatedAt {
     @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
     // google login API 보고 email, password 필드 생각 다시 해야함
     // google 로그인 하면 이메일, 닉네임 받아올 수 있으려나?
-
-    private String email;
 
     // 유저 추가 정보
     private int gender;
@@ -73,3 +80,6 @@ public class User extends BaseEntityWithUpdatedAt {
         // color, style 매핑 해야함
     }
 }
+
+
+
