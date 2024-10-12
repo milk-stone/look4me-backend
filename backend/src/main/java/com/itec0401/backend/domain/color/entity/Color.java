@@ -16,7 +16,7 @@ public class Color extends BaseEntity {
     @Column(name = "color_id")
     private Long id;
 
-    private String style;
+    private String color;
 
     @OneToMany(mappedBy = "color")
     private List<UserColor> userColors;
