@@ -2,6 +2,7 @@ package com.itec0401.backend.domain.style.entity;
 
 import com.itec0401.backend.domain.userstyle.entity.UserStyle;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,4 +20,9 @@ public class Style {
 
     @OneToMany(mappedBy = "style")
     private List<UserStyle> userStyles;
+
+    @Builder
+    public Style(String style){
+        this.style = style;
+    }
 }
