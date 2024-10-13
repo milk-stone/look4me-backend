@@ -5,4 +5,5 @@ import com.itec0401.backend.domain.user.entity.User;
 
 public interface UserColorService {
     void createUserColor(User user, Color color);
+    void deleteAllUserColors(User user);
 }

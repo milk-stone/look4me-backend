@@ -5,4 +5,5 @@ import com.itec0401.backend.domain.user.entity.User;
 
 public interface UserStyleService {
     void createUserStyle(User user, Style style);
+    void deleteAllUserStyles(User user);
 }

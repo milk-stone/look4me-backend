@@ -19,4 +19,9 @@ public class UserColorServiceImpl implements UserColorService {
     public void createUserColor(User user, Color color) {
         userColorRepository.save(new UserColor(user, color));
     }
+
+    @Transactional
+    public void deleteAllUserColors(User user) {
+        userColorRepository.deleteByUserId(user.getId());
+    }
 }

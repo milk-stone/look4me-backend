@@ -18,7 +18,11 @@ public class UserStyleServiceImpl implements UserStyleService {
     @Transactional
     public void createUserStyle(User user, Style style) {
         userStyleRepository.save(new UserStyle(user, style));
+    }
 
+    @Transactional
+    public void deleteAllUserStyles(User user) {
+        userStyleRepository.deleteByUserId(user.getId());
     }
 
 }

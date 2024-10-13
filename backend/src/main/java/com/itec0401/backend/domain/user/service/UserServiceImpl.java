@@ -1,5 +1,7 @@
 package com.itec0401.backend.domain.user.service;
 
+import com.itec0401.backend.domain.color.service.ColorService;
+import com.itec0401.backend.domain.style.service.StyleService;
 import com.itec0401.backend.domain.user.dto.LoginRequestDTO;
 import com.itec0401.backend.domain.user.dto.LoginResponseDTO;
 import com.itec0401.backend.domain.user.dto.MemberDTO;
@@ -7,6 +9,8 @@ import com.itec0401.backend.domain.user.dto.UserInfoDto;
 import com.itec0401.backend.domain.user.entity.User;
 import com.itec0401.backend.domain.user.jwt.JwtTokenProvider;
 import com.itec0401.backend.domain.user.repository.UserRepository;
+import com.itec0401.backend.domain.usercolor.service.UserColorService;
+import com.itec0401.backend.domain.userstyle.service.UserStyleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,10 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final UserColorService userColorService;
+    private final UserStyleService userStyleService;
+    private final StyleService styleService;
+    private final ColorService colorService;
 
     public UserInfoDto getUserProfile(Long id){
         User user = userRepository.findById(id).orElse(null);
