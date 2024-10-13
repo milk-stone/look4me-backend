@@ -23,4 +23,8 @@ public class UserColor extends BaseEntityWithUpdatedAt {
     @JoinColumn(name = "color_id")
     private Color color;
 
+    public UserColor(User user, Color color) {
+        this.user = user;
+        this.color = color;
+    }
 }
