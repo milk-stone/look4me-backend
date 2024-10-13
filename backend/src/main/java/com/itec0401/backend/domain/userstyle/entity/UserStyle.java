@@ -22,4 +22,8 @@ public class UserStyle {
     @JoinColumn(name = "style_id")
     private Style style;
 
+    public UserStyle(User user, Style style) {
+        this.user = user;
+        this.style = style;
+    }
 }
