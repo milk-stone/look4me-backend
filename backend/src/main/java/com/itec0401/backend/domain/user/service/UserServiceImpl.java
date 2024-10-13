@@ -8,6 +8,8 @@ import com.itec0401.backend.domain.user.entity.User;
 import com.itec0401.backend.domain.user.jwt.JwtTokenProvider;
 import com.itec0401.backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -66,7 +69,7 @@ public class UserServiceImpl implements UserService{
             return new ResponseEntity<>("회원가입 완료", HttpStatus.OK); // 성공 시 200 반환
         } catch (Exception e) {
             // 예외 발생 시 처리
-            System.out.println("e = " + e);
+            log.info("회원가입 중 오류: " + e);
             return new ResponseEntity<>("회원가입 실패", HttpStatus.BAD_REQUEST); // 이메일 조회 후 회원가입 할것
         }
     }
