@@ -1,16 +1,16 @@
 package com.itec0401.backend.domain.user.service;
 
+import com.itec0401.backend.domain.color.entity.Color;
 import com.itec0401.backend.domain.color.service.ColorService;
+import com.itec0401.backend.domain.style.entity.Style;
 import com.itec0401.backend.domain.style.service.StyleService;
-import com.itec0401.backend.domain.user.dto.LoginRequestDTO;
-import com.itec0401.backend.domain.user.dto.LoginResponseDTO;
-import com.itec0401.backend.domain.user.dto.MemberDTO;
-import com.itec0401.backend.domain.user.dto.UserInfoDto;
+import com.itec0401.backend.domain.user.dto.*;
 import com.itec0401.backend.domain.user.entity.User;
 import com.itec0401.backend.domain.user.jwt.JwtTokenProvider;
 import com.itec0401.backend.domain.user.repository.UserRepository;
 import com.itec0401.backend.domain.usercolor.service.UserColorService;
 import com.itec0401.backend.domain.userstyle.service.UserStyleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,5 +82,27 @@ public class UserServiceImpl implements UserService{
     @Override
     public ResponseEntity<Boolean> isEmailEmpty(String email) {
         return new ResponseEntity<>(userRepository.findByEmail(email).isEmpty(), HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public UserInfoDto updateUserProfile(String accessToken, UpdateUserProfileDto updateUserProfileDto){
+        // accessToken 으로 user를 잘 구해오는지 확인해야함. 코드 수정 요망
+        User user = userRepository.findById(Long.parseLong(accessToken)).get();
+
+        userColorService.deleteAllUserColors(user);
+        userStyleService.deleteAllUserStyles(user);
+
+        for (String color : updateUserProfileDto.getColorList()){
+            Optional<Color> cur = colorService.findColorByName(color);
+            cur.ifPresent(value -> userColorService.createUserColor(user, value));
+        }
+        for (String style : updateUserProfileDto.getStyleList()) {
+            Optional<Style> cur = styleService.findStyleByName(style);
+            cur.ifPresent(value -> userStyleService.createUserStyle(user, value));
+        }
+        user.update(updateUserProfileDto);
+        userRepository.save(user);
+        return UserInfoDto.toDto(user);
     }
 }

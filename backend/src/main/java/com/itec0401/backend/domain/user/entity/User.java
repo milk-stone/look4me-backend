@@ -1,6 +1,7 @@
 package com.itec0401.backend.domain.user.entity;
 
 import com.itec0401.backend.domain.coordination.entity.Coordination;
+import com.itec0401.backend.domain.user.dto.UpdateUserProfileDto;
 import com.itec0401.backend.domain.user.dto.UserRequestDto;
 import com.itec0401.backend.domain.usercolor.entity.UserColor;
 import com.itec0401.backend.domain.userstyle.entity.UserStyle;
@@ -65,6 +66,15 @@ public class User extends BaseEntityWithUpdatedAt {
                 .weight(userRequestDto.getWeight())
                 .tone(userRequestDto.getTone())
                 .build();
+    }
+
+    public void update(UpdateUserProfileDto updateUserProfileDto) {
+        this.nickname = updateUserProfileDto.getNickname();
+        this.age = updateUserProfileDto.getAge();
+        this.gender = updateUserProfileDto.getGender();
+        this.height = updateUserProfileDto.getHeight();
+        this.weight = updateUserProfileDto.getWeight();
+        this.tone = updateUserProfileDto.getTone();
     }
 
     @Builder
