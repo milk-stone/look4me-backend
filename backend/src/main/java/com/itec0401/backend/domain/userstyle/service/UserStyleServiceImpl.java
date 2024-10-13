@@ -15,11 +15,13 @@ public class UserStyleServiceImpl implements UserStyleService {
     private final UserStyleRepository userStyleRepository;
     private final StyleService styleService;
 
+    @Override
     @Transactional
     public void createUserStyle(User user, Style style) {
         userStyleRepository.save(new UserStyle(user, style));
     }
 
+    @Override
     @Transactional
     public void deleteAllUserStyles(User user) {
         userStyleRepository.deleteByUserId(user.getId());

@@ -13,6 +13,7 @@ public class StyleServiceImpl implements StyleService {
     private final StyleRepository styleRepository;
 
     // Style 이름으로 style 객체 찾기
+    @Override
     public Optional<Style> findStyleByName(String style) {
         return styleRepository.findByStyle(style);
     }

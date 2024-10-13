@@ -13,6 +13,7 @@ public class ColorServiceImpl implements ColorService {
     private final ColorRepository colorRepository;
 
     // Color 이름으로 color 객체 찾기
+    @Override
     public Optional<Color> findColorByName(String color) {
         return colorRepository.findByColor(color);
     }
