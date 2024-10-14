@@ -5,6 +5,7 @@ import com.itec0401.backend.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,8 @@ public class UserController {
 
     @Operation(summary = "마이 페이지 수정")
     @PutMapping("/profile")
-    public ResponseEntity<UserInfoDto> updateUserProfile(@RequestParam Long user_id, @RequestBody UpdateUserProfileDto updateUserProfileDto) {
-        return null;
+    public ResponseEntity<UserInfoDto> updateUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody UpdateUserProfileDto updateUserProfileDto) {
+        return ResponseEntity.ok(userService.updateUserProfile(accessToken, updateUserProfileDto));
     }
 
     @Operation(
