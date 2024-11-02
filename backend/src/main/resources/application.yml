@@ -1,5 +1,10 @@
 spring:
   # MySQL 관련 설정
+  datasource:
+    url: jdbc:mysql://${RDS_HOST}:${RDS_PORT}/${RDS_DB_NAME}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   profiles:
     active: secret
   application:
