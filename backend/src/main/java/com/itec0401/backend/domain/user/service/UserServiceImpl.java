@@ -35,9 +35,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ResponseEntity<UserInfoDto> getUserProfile(String accessToken){
+        // 토큰 인지 확인
+        if (!jwtTokenProvider.isAccessToken(accessToken)){
+            //System.out.println("Invalid access token");
+            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.UNAUTHORIZED);
+        }
         Optional<User> user = userRepository.findByEmail(jwtTokenProvider.getEmail(accessToken));
         if (user.isEmpty()){
-            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.BAD_REQUEST);
         }
         User validUser = user.get();
         return new ResponseEntity<>(UserInfoDto.toDto(validUser), HttpStatus.OK);
@@ -93,7 +98,7 @@ public class UserServiceImpl implements UserService{
         // 토큰 인지 확인
         if (!jwtTokenProvider.isAccessToken(accessToken)){
             //System.out.println("Invalid access token");
-            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.UNAUTHORIZED);
         }
         // 토큰으로 이메일 파싱
         String email = jwtTokenProvider.getEmail(accessToken);
