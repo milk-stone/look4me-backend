@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 public class UserInfoDto {
-    private final Long id;
+    private final String email;
     private final String nickName;
 
     private final int gender;
@@ -27,22 +27,14 @@ public class UserInfoDto {
     private final List<String> styleList;
 
     public static UserInfoDto toDto(User user){
-//        List<String> userColors = user.getUserColorList().stream()
-//                .map(UserColor::getColor)
-//                .map(Color::getColor)
-//                .toList();
         List<String> userColors = user.getUserColorList().stream()
                 .map(userColor -> userColor.getColor().getColor())
                 .toList();
-//        List<String> userStyles = user.getUserStyleList().stream()
-//                .map(UserStyle::getStyle)
-//                .map(Style::getStyle)
-//                .toList();
         List<String> userStyles = user.getUserStyleList().stream()
                 .map(userStyle -> userStyle.getStyle().getStyle())
                 .toList();
         return UserInfoDto.builder()
-                .id(user.getId())
+                .email(user.getEmail())
                 .nickName(user.getNickname())
                 .gender(user.getGender())
                 .age(user.getAge())
