@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,8 +25,8 @@ public class UserController {
             }
     )
     @GetMapping("/profile")
-    public ResponseEntity<UserInfoDto> getUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        return userService.getUserProfile(accessToken);
+    public ResponseEntity<UserInfoDto> getUserProfile(Authentication authentication) {
+        return userService.getUserProfile(authentication);
     }
 
     @Operation(
@@ -37,8 +38,8 @@ public class UserController {
             }
     )
     @PutMapping("/profile")
-    public ResponseEntity<UserInfoDto> updateUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody UpdateUserProfileDto updateUserProfileDto) {
-        return userService.updateUserProfile(accessToken, updateUserProfileDto);
+    public ResponseEntity<UserInfoDto> updateUserProfile(@RequestBody UpdateUserProfileDto updateUserProfileDto, Authentication authentication) {
+        return userService.updateUserProfile(updateUserProfileDto, authentication);
     }
 
     @Operation(

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +35,10 @@ public class UserServiceImpl implements UserService{
     private final ColorService colorService;
 
     @Override
-    public ResponseEntity<UserInfoDto> getUserProfile(String accessToken){
-        // 토큰 인지 확인
-        if (!jwtTokenProvider.isAccessToken(accessToken)){
-            //System.out.println("Invalid access token");
-            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.UNAUTHORIZED);
-        }
-        Optional<User> user = userRepository.findByEmail(jwtTokenProvider.getEmail(accessToken));
+    public ResponseEntity<UserInfoDto> getUserProfile(Authentication authentication){
+        // Authentication으로 이메일 파싱
+        String email = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()){
             return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.BAD_REQUEST);
         }
@@ -94,14 +92,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public ResponseEntity<UserInfoDto> updateUserProfile(String accessToken, UpdateUserProfileDto updateUserProfileDto){
-        // 토큰 인지 확인
-        if (!jwtTokenProvider.isAccessToken(accessToken)){
-            //System.out.println("Invalid access token");
-            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.UNAUTHORIZED);
-        }
-        // 토큰으로 이메일 파싱
-        String email = jwtTokenProvider.getEmail(accessToken);
+    public ResponseEntity<UserInfoDto> updateUserProfile(UpdateUserProfileDto updateUserProfileDto, Authentication authentication){
+        // Authentication으로 이메일 파싱
+        String email = authentication.getName();
         // 이메일로 유저 불러오기 (없는 경우는 없겠지만 혹시나 모르니 분기)
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()){
