@@ -87,7 +87,6 @@ public class User extends BaseEntityWithUpdatedAt {
         this.height = height;
         this.weight = weight;
         this.tone = tone;
-        // color, style 매핑 해야함
     }
 }
 

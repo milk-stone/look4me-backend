@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +34,16 @@ public class UserServiceImpl implements UserService{
     private final StyleService styleService;
     private final ColorService colorService;
 
-    public UserInfoDto getUserProfile(Long id){
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null){
-            return null;
+    @Override
+    public ResponseEntity<UserInfoDto> getUserProfile(Authentication authentication){
+        // Authentication으로 이메일 파싱
+        String email = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()){
+            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.BAD_REQUEST);
         }
-        else {
-            return UserInfoDto.toDto(user);
-        }
+        User validUser = user.get();
+        return new ResponseEntity<>(UserInfoDto.toDto(validUser), HttpStatus.OK);
     }
 
     @Override
@@ -89,23 +92,31 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public UserInfoDto updateUserProfile(String accessToken, UpdateUserProfileDto updateUserProfileDto){
-        // accessToken 으로 user를 잘 구해오는지 확인해야함. 코드 수정 요망
-        User user = userRepository.findById(Long.parseLong(accessToken)).get();
+    public ResponseEntity<UserInfoDto> updateUserProfile(UpdateUserProfileDto updateUserProfileDto, Authentication authentication){
+        // Authentication으로 이메일 파싱
+        String email = authentication.getName();
+        // 이메일로 유저 불러오기 (없는 경우는 없겠지만 혹시나 모르니 분기)
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()){
+            return new ResponseEntity<>(UserInfoDto.builder().build(), HttpStatus.BAD_REQUEST);
+        }
+        User validUser = user.get();
 
-        userColorService.deleteAllUserColors(user);
-        userStyleService.deleteAllUserStyles(user);
+        // 컬러, 스타일 매핑 정보 모두 삭제
+        userColorService.deleteAllUserColors(validUser);
+        userStyleService.deleteAllUserStyles(validUser);
 
+        // 새롭게 컬러, 스타일 매핑
         for (String color : updateUserProfileDto.getColorList()){
             Optional<Color> cur = colorService.findColorByName(color);
-            cur.ifPresent(value -> userColorService.createUserColor(user, value));
+            cur.ifPresent(value -> userColorService.createUserColor(validUser, value));
         }
         for (String style : updateUserProfileDto.getStyleList()) {
             Optional<Style> cur = styleService.findStyleByName(style);
-            cur.ifPresent(value -> userStyleService.createUserStyle(user, value));
+            cur.ifPresent(value -> userStyleService.createUserStyle(validUser, value));
         }
-        user.update(updateUserProfileDto);
-        userRepository.save(user);
-        return UserInfoDto.toDto(user);
+        validUser.update(updateUserProfileDto);
+        userRepository.save(validUser);
+        return new ResponseEntity<>(UserInfoDto.toDto(validUser), HttpStatus.OK);
     }
 }

@@ -2,11 +2,12 @@ package com.itec0401.backend.domain.user.service;
 
 import com.itec0401.backend.domain.user.dto.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
 public interface UserService {
-    UserInfoDto getUserProfile(Long id);
+    ResponseEntity<UserInfoDto> getUserProfile(Authentication authentication);
     ResponseEntity<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO);
     ResponseEntity<String> signIn(MemberDTO memberDTO);
     ResponseEntity<Boolean> isEmailEmpty(String email);
-    UserInfoDto updateUserProfile(String accessToken, UpdateUserProfileDto updateUserProfileDto);
+    ResponseEntity<UserInfoDto> updateUserProfile(UpdateUserProfileDto updateUserProfileDto, Authentication authentication);
 }

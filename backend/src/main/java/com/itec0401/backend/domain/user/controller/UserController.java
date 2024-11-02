@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,16 +16,30 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @Operation(summary = "마이 페이지 열람")
+    @Operation(
+            summary = "마이 페이지 열람",
+            description = "AccessToken으로 유저 판별 후 마이페이지 내용 전송",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "마이페이지 열람 성공"),
+                    @ApiResponse(responseCode = "401", description = "마이페이지 열람 실패, 토큰 만료 여부 판단 바람")
+            }
+    )
     @GetMapping("/profile")
-    public ResponseEntity<UserInfoDto> getUserProfile(@RequestParam Long user_id) {
-        return ResponseEntity.ok(userService.getUserProfile(user_id));
+    public ResponseEntity<UserInfoDto> getUserProfile(Authentication authentication) {
+        return userService.getUserProfile(authentication);
     }
 
-    @Operation(summary = "마이 페이지 수정")
+    @Operation(
+            summary = "마이 페이지 수정",
+            description = "AccessToken으로 유저 판별 후 UpdateProfileDto 내용으로 업데이트",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "마이페이지 수정 성공"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음, 토큰 만료 여부 판단 바람")
+            }
+    )
     @PutMapping("/profile")
-    public ResponseEntity<UserInfoDto> updateUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody UpdateUserProfileDto updateUserProfileDto) {
-        return ResponseEntity.ok(userService.updateUserProfile(accessToken, updateUserProfileDto));
+    public ResponseEntity<UserInfoDto> updateUserProfile(@RequestBody UpdateUserProfileDto updateUserProfileDto, Authentication authentication) {
+        return userService.updateUserProfile(updateUserProfileDto, authentication);
     }
 
     @Operation(
