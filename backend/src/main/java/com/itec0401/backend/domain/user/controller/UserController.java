@@ -17,14 +17,14 @@ public class UserController {
 
     @Operation(summary = "마이 페이지 열람")
     @GetMapping("/profile")
-    public ResponseEntity<UserInfoDto> getUserProfile(@RequestParam Long user_id) {
-        return ResponseEntity.ok(userService.getUserProfile(user_id));
+    public ResponseEntity<UserInfoDto> getUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        return userService.getUserProfile(accessToken);
     }
 
     @Operation(summary = "마이 페이지 수정")
     @PutMapping("/profile")
     public ResponseEntity<UserInfoDto> updateUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody UpdateUserProfileDto updateUserProfileDto) {
-        return ResponseEntity.ok(userService.updateUserProfile(accessToken, updateUserProfileDto));
+        return userService.updateUserProfile(accessToken, updateUserProfileDto);
     }
 
     @Operation(
