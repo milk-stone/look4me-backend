@@ -44,3 +44,5 @@ server:
       force: true
   tomcat:
     max-http-form-post-size: 15MB
+JWT:
+  SECRET-KEY: ${JWT_KEY}
