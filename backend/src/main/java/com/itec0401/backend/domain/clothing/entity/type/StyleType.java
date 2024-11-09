@@ -11,6 +11,6 @@ public enum StyleType {
                 return style;
             }
         }
-        return null;
+        return OTHER;
     }
 }

@@ -107,8 +107,8 @@ public enum Category {
             CLUTCH_BAG("클러치백", BAGS),
             DOCUMENT_BAG("서류가방", BAGS),
             DUFFLE_BAG("짐색", BAGS),
-            LUGGAGE("캐리어", BAGS);
-
+            LUGGAGE("캐리어", BAGS),
+    OTHER("예외", null);
 
     // 카테고리 이름
     private final String title;
@@ -162,8 +162,13 @@ public enum Category {
 
     public static Category convertString(String title) {
         for (Category category : Category.values()) {
-            if(Objects.equals(category.getTitle(), title)) return category;
+            if(Objects.equals(category.name().toLowerCase(), title.toLowerCase())) return category;
         }
-        return null;
+        return OTHER;
+    }
+
+    @Override
+    public String toString() {
+        return title;
     }
 }

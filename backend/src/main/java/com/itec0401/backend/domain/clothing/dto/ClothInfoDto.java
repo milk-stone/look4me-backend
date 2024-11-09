@@ -1,5 +1,6 @@
 package com.itec0401.backend.domain.clothing.dto;
 
+import com.itec0401.backend.domain.clothing.entity.Clothing;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,4 +17,18 @@ public class ClothInfoDto {
     private String season;
     private String style;
     private String description;
+
+    public static ClothInfoDto toDto(Clothing clothing){
+        return ClothInfoDto.builder()
+                .name(clothing.getName())
+                .category(clothing.getCategory().toString())
+                .baseColor(clothing.getBaseColor().toString())
+                .pointColor(clothing.getPointColor().toString())
+                .textile(clothing.getTextile().toString())
+                .pattern(clothing.getPattern().toString())
+                .season(clothing.getSeason().toString())
+                .style(clothing.getStyle().toString())
+                .description(clothing.getDescription())
+                .build();
+    }
 }

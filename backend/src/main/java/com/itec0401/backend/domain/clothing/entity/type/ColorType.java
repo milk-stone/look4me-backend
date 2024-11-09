@@ -8,14 +8,14 @@ public enum ColorType {
     SKY_BLUE, LIGHT_PURPLE, PINK, CORAL, ORANGE,
     GREEN, BLUE, PURPLE, RED, CAMEL,
     BROWN, KHAKI, NAVY, WINE, GOLD,
-    SILVER;
+    SILVER, OTHER;
 
     public static ColorType convertString(String color) {
         for (ColorType colorType : ColorType.values()) {
-            if (Objects.equals(colorType.toString().toLowerCase(), color.toLowerCase())) {
+            if (Objects.equals(colorType.name().toLowerCase(), color.toLowerCase())) {
                 return colorType;
             }
         }
-        return null;
+        return OTHER;
     }
 }

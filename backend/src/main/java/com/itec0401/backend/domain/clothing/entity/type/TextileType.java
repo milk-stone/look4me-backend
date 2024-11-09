@@ -8,10 +8,10 @@ public enum TextileType {
 
     public static TextileType convertString(String textile){
         for (TextileType textileType : TextileType.values()) {
-            if (textileType.toString().equals(textile)) {
+            if (textileType.name().equals(textile)) {
                 return textileType;
             }
         }
-        return null;
+        return OTHER;
     }
 }

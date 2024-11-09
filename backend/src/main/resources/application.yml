@@ -1,11 +1,13 @@
 spring:
-  application:
+  profiles:
+    active: secret
+  pplication:
     name: backend
-  datasource:
-    url: jdbc:mysql://${RDS_HOST}:${RDS_PORT}/${RDS_DB_NAME}
-    username: ${RDS_USERNAME}
-    password: ${RDS_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    url: jdbc:mysql://${RDS_HOST}:${RDS_PORT}/${RDS_DB_NAME}
+#    username: ${RDS_USERNAME}
+#    password: ${RDS_PASSWORD}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update

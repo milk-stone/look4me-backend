@@ -9,6 +9,6 @@ public enum SeasonType {
                 return season;
             }
         }
-        return null;
+        return SPRING;
     }
 }

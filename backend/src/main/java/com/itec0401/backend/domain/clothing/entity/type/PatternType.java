@@ -7,10 +7,10 @@ public enum PatternType {
 
     public static PatternType convertString(String pattern) {
         for (PatternType patternType : PatternType.values()) {
-            if (patternType.toString().equalsIgnoreCase(pattern)) {
+            if (patternType.name().equalsIgnoreCase(pattern)) {
                 return patternType;
             }
         }
-        return null;
+        return OTHER;
     }
 }
