@@ -23,15 +23,15 @@ public class ClothingServiceImpl implements ClothingService {
 
     public ResponseEntity<ClothInfoDto> createClothing(ClothInfoDto clothInfoDto, Authentication authentication) {
         // 권한 확인
-        System.out.println("hihihi");
         Optional<User> user = userService.checkPermission(authentication);
         if (user.isEmpty())
             return new ResponseEntity<>(ClothInfoDto.builder().build(), HttpStatus.BAD_REQUEST);
-
-        System.out.println("2");
+        User validUser = user.get();
         Clothing c = Clothing.builder()
+                .imageUri(clothInfoDto.getImageUri())
                 .name(clothInfoDto.getName())
-                .category(clothInfoDto.getCategory())
+                .mainCategory(clothInfoDto.getMainCategory())
+                .subCategory(clothInfoDto.getSubCategory())
                 .baseColor(clothInfoDto.getBaseColor())
                 .pointColor(clothInfoDto.getPointColor())
                 .textile(clothInfoDto.getTextile())
@@ -39,10 +39,11 @@ public class ClothingServiceImpl implements ClothingService {
                 .season(clothInfoDto.getSeason())
                 .style(clothInfoDto.getStyle())
                 .description(clothInfoDto.getDescription())
+                .user(validUser)
                 .build();
-        System.out.println("3");
+
         clothingRepository.save(c);
-        System.out.println("4");
+
         return new ResponseEntity<>(ClothInfoDto.toDto(c), HttpStatus.CREATED);
     }
 }

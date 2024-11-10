@@ -128,9 +128,10 @@ public enum Category {
         return title;
     }
 
-    // 부모카테고리 Getter
-    public Optional<Category> getParentCategory() {
-        return Optional.ofNullable(parentCategory);
+    // 부모카테고리 Getter (Name 반환하도록 수정했음)
+    public String getParentCategoryName() {
+        Optional<Category> category = Optional.ofNullable(parentCategory);
+        return category.map(Enum::name).orElse("INVALID");
     }
 
     // 자식카테고리 Getter

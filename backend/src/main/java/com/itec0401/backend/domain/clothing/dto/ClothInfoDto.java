@@ -8,8 +8,10 @@ import lombok.Getter;
 @Builder
 public class ClothInfoDto {
     /* 용도 : 이미지를 Python 서버로 보냈을 때, 파이썬 서버가 보내준 정보를 담는 DTO */
+    private String imageUri;
     private String name;
-    private String category;
+    private String mainCategory;
+    private String subCategory;
     private String baseColor;
     private String pointColor;
     private String textile;
@@ -20,14 +22,16 @@ public class ClothInfoDto {
 
     public static ClothInfoDto toDto(Clothing clothing){
         return ClothInfoDto.builder()
+                .imageUri(clothing.getImageUri())
                 .name(clothing.getName())
-                .category(clothing.getCategory().toString())
-                .baseColor(clothing.getBaseColor().toString())
-                .pointColor(clothing.getPointColor().toString())
-                .textile(clothing.getTextile().toString())
-                .pattern(clothing.getPattern().toString())
-                .season(clothing.getSeason().toString())
-                .style(clothing.getStyle().toString())
+                .mainCategory(clothing.getSubCategory().getParentCategoryName())
+                .subCategory(clothing.getSubCategory().name())
+                .baseColor(clothing.getBaseColor().name())
+                .pointColor(clothing.getPointColor().name())
+                .textile(clothing.getTextile().name())
+                .pattern(clothing.getPattern().name())
+                .season(clothing.getSeason().name())
+                .style(clothing.getStyle().name())
                 .description(clothing.getDescription())
                 .build();
     }

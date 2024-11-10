@@ -18,9 +18,15 @@ public class Clothing {
     @Column(name = "clothing_id")
     private Long id;
 
+    private String imageUri;
+
     private String name;
 
-    private Category category;
+    @Enumerated(EnumType.STRING)
+    private Category mainCategory;
+
+    @Enumerated(EnumType.STRING)
+    private Category subCategory;
 
     @Enumerated(EnumType.STRING)
     private ColorType baseColor;
@@ -50,17 +56,22 @@ public class Clothing {
     private User user;
 
     @Builder
-    public Clothing(String name,
-                    String category,
+    public Clothing(String imageUri,
+                    String name,
+                    String mainCategory,
+                    String subCategory,
                     String baseColor,
                     String pointColor,
                     String textile,
                     String pattern,
                     String season,
                     String style,
-                    String description) {
+                    String description,
+                    User user) {
+        this.imageUri = imageUri;
         this.name = name;
-        this.category = Category.convertString(category);
+        this.mainCategory = Category.convertString(mainCategory);
+        this.subCategory = Category.convertString(subCategory);
         this.baseColor = ColorType.convertString(baseColor);
         this.pointColor = ColorType.convertString(pointColor);
         this.textile = TextileType.convertString(textile);
@@ -68,6 +79,7 @@ public class Clothing {
         this.season = SeasonType.convertString(season);
         this.style = StyleType.convertString(style);
         this.description = description;
+        this.user = user;
     }
 
 }
