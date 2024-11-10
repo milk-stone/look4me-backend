@@ -108,7 +108,7 @@ public enum Category {
             DOCUMENT_BAG("서류가방", BAGS),
             DUFFLE_BAG("짐색", BAGS),
             LUGGAGE("캐리어", BAGS),
-    OTHER("예외", null);
+    INVALID("예외", null);
 
     // 카테고리 이름
     private final String title;
@@ -164,11 +164,6 @@ public enum Category {
         for (Category category : Category.values()) {
             if(Objects.equals(category.name().toLowerCase(), title.toLowerCase())) return category;
         }
-        return OTHER;
-    }
-
-    @Override
-    public String toString() {
-        return title;
+        return INVALID;
     }
 }

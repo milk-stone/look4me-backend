@@ -8,7 +8,7 @@ public enum ColorType {
     SKY_BLUE, LIGHT_PURPLE, PINK, CORAL, ORANGE,
     GREEN, BLUE, PURPLE, RED, CAMEL,
     BROWN, KHAKI, NAVY, WINE, GOLD,
-    SILVER, OTHER;
+    SILVER, INVALID;
 
     public static ColorType convertString(String color) {
         for (ColorType colorType : ColorType.values()) {
@@ -16,6 +16,6 @@ public enum ColorType {
                 return colorType;
             }
         }
-        return OTHER;
+        return INVALID;
     }
 }
