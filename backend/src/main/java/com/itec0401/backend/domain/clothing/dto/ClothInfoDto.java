@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 public class ClothInfoDto {
     /* 용도 : 이미지를 Python 서버로 보냈을 때, 파이썬 서버가 보내준 정보를 담는 DTO */
+    /* Frontend -> Python -> Frontend -> Spring Boot */
     private String imageUri;
     private String name;
     private String mainCategory;
