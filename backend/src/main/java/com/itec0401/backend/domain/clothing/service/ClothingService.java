@@ -7,4 +7,5 @@ import org.springframework.security.core.Authentication;
 
 public interface ClothingService {
     ResponseEntity<ClothInfoDto> createClothing(ClothInfoDto clothInfoDto, Authentication authentication);
+    ResponseEntity<ClothInfoDto> getClothingById(Long id, Authentication authentication);
 }

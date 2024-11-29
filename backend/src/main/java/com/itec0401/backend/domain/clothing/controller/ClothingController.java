@@ -30,6 +30,14 @@ public class ClothingController {
         return clothingService.createClothing(clothInfoDto, authentication);
     }
 
+    @Operation(summary = "특정 옷 조회", description = "PathVariable 로 id 값을 받고, 그 id를 가진 옷 정보 반환")
+    @GetMapping("/{id}")
+    public ResponseEntity<ClothInfoDto> getClothingById(@PathVariable Long id, Authentication authentication){
+        return clothingService.getClothingById(id, authentication);
+    }
+
+
+
     /*
     @PostMapping("/upload")
     public ResponseEntity<ClothInfoDto> uploadClothingImage(Authentication authentication, @RequestParam("file") MultipartFile file){

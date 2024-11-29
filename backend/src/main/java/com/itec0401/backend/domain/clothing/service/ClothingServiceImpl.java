@@ -7,6 +7,8 @@ import com.itec0401.backend.domain.clothing.entity.type.ColorType;
 import com.itec0401.backend.domain.clothing.repository.ClothingRepository;
 import com.itec0401.backend.domain.user.entity.User;
 import com.itec0401.backend.domain.user.service.UserService;
+import com.itec0401.backend.global.exception.ClothingNotFoundException;
+import com.itec0401.backend.global.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +47,21 @@ public class ClothingServiceImpl implements ClothingService {
         clothingRepository.save(c);
 
         return new ResponseEntity<>(ClothInfoDto.toDto(c), HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<ClothInfoDto> getClothingById(Long id, Authentication authentication) {
+        Optional<User> user = userService.checkPermission(authentication);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        User validUser = user.get();
+
+        Optional<Clothing> clothing = clothingRepository.findByClothingId(id);
+        if (clothing.isEmpty()) {
+            throw new ClothingNotFoundException("Clothing not found");
+        }
+        Clothing c = clothing.get();
+        return  new ResponseEntity<>(ClothInfoDto.toDto(c), HttpStatus.OK);
     }
 }
