@@ -1,6 +1,7 @@
 package com.itec0401.backend.domain.clothing.service;
 
 import com.itec0401.backend.domain.clothing.dto.ClothInfoDto;
+import com.itec0401.backend.domain.clothing.dto.ClothUpdateRequestDto;
 import com.itec0401.backend.domain.clothing.entity.Clothing;
 import com.itec0401.backend.domain.clothing.entity.type.Category;
 import com.itec0401.backend.domain.clothing.entity.type.ColorType;
@@ -63,5 +64,23 @@ public class ClothingServiceImpl implements ClothingService {
         }
         Clothing c = clothing.get();
         return  new ResponseEntity<>(ClothInfoDto.toDto(c), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateClothing(Long id, ClothUpdateRequestDto dto, Authentication authentication) {
+        Optional<User> user = userService.checkPermission(authentication);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        User validUser = user.get();
+
+        Optional<Clothing> clothing = clothingRepository.findByClothingId(id);
+        if (clothing.isEmpty()) {
+            throw new ClothingNotFoundException("Clothing not found");
+        }
+        Clothing c = clothing.get();
+        c.update(dto);
+        clothingRepository.save(c);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

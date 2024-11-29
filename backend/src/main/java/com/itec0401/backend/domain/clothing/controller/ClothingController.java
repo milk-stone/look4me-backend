@@ -2,6 +2,7 @@ package com.itec0401.backend.domain.clothing.controller;
 
 
 import com.itec0401.backend.domain.clothing.dto.ClothInfoDto;
+import com.itec0401.backend.domain.clothing.dto.ClothUpdateRequestDto;
 import com.itec0401.backend.domain.clothing.service.ClothingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,6 +35,12 @@ public class ClothingController {
     @GetMapping("/{id}")
     public ResponseEntity<ClothInfoDto> getClothingById(@PathVariable Long id, Authentication authentication){
         return clothingService.getClothingById(id, authentication);
+    }
+
+    @Operation(summary = "특정 옷 수정", description = "PathVariable로 id 값을 받고, RequestBody로 업데이트 내용을 받으면 그 옷을 찾아서 내용 수정")
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateClothing(@PathVariable Long id, @RequestBody ClothUpdateRequestDto dto, Authentication authentication){
+        return clothingService.updateClothing(id, dto, authentication);
     }
 
 

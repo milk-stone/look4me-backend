@@ -1,5 +1,6 @@
 package com.itec0401.backend.domain.clothing.entity;
 
+import com.itec0401.backend.domain.clothing.dto.ClothUpdateRequestDto;
 import com.itec0401.backend.domain.clothing.entity.type.*;
 import com.itec0401.backend.domain.coordinationclothing.entity.CoordinationClothing;
 import com.itec0401.backend.domain.user.entity.User;
@@ -54,6 +55,20 @@ public class Clothing {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void update(ClothUpdateRequestDto dto){
+        this.imageUri = imageUri;
+        this.name = name;
+        this.mainCategory = Category.convertString(dto.getMainCategory());
+        this.subCategory = Category.convertString(dto.getSubCategory());
+        this.baseColor = ColorType.convertString(dto.getBaseColor());
+        this.pointColor = ColorType.convertString(dto.getPointColor());
+        this.textile = TextileType.convertString(dto.getTextile());
+        this.pattern = PatternType.convertString(dto.getPattern());
+        this.season = SeasonType.convertString(dto.getSeason());
+        this.style = StyleType.convertString(dto.getStyle());
+        this.description = description;
+    }
 
     @Builder
     public Clothing(String imageUri,
