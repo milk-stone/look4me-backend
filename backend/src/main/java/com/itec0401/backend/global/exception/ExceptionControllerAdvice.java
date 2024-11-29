@@ -14,4 +14,10 @@ public class ExceptionControllerAdvice {
         log.info("UserNotFoundException: {}", e.getMessage());
         return new ResponseEntity<>(ErrorResult.builder().code("400").message("UserNotFound-EX").build(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ClothingNotFoundException.class)
+    public ResponseEntity<ErrorResult> ClothingNotFoundException(ClothingNotFoundException e) {
+        log.info("ClothingNotFoundException: {}", e.getMessage());
+        return new ResponseEntity<>(ErrorResult.builder().code("400").message("ClothingNotFound-EX").build(), HttpStatus.BAD_REQUEST);
+    }
 }
