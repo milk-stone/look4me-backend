@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,5 +84,20 @@ public class ClothingServiceImpl implements ClothingService {
         c.update(dto);
         clothingRepository.save(c);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ClothInfoDto>> getAllClothings(Authentication authentication) {
+        Optional<User> user = userService.checkPermission(authentication);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        User validUser = user.get();
+
+        List<ClothInfoDto> clothInfoDtos = new ArrayList<>();
+        for (Clothing c : validUser.getClothingList()){
+            clothInfoDtos.add(ClothInfoDto.toDto(c));
+        }
+        return new ResponseEntity<>(clothInfoDtos, HttpStatus.OK);
     }
 }
