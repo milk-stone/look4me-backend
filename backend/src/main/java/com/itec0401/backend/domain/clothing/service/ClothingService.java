@@ -13,4 +13,5 @@ public interface ClothingService {
     ResponseEntity<ClothInfoDto> getClothingById(Long id, Authentication authentication);
     ResponseEntity<Void> updateClothing(Long id, ClothUpdateRequestDto dto, Authentication authentication);
     ResponseEntity<List<ClothInfoDto>> getAllClothings(Authentication authentication);
+    ResponseEntity<Integer> deleteClothingById(Long id, Authentication authentication);
 }

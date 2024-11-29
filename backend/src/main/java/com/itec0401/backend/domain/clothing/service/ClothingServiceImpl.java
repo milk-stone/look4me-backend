@@ -100,4 +100,15 @@ public class ClothingServiceImpl implements ClothingService {
         }
         return new ResponseEntity<>(clothInfoDtos, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Integer> deleteClothingById(Long id, Authentication authentication) {
+        Optional<User> user = userService.checkPermission(authentication);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        User validUser = user.get();
+
+        return new ResponseEntity<>(clothingRepository.deleteByTwoId(validUser.getId(), id), HttpStatus.OK);
+    }
 }

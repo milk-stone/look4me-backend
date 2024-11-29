@@ -60,6 +60,15 @@ public class ClothingController {
         return clothingService.getAllClothings(authentication);
     }
 
+    @Operation(
+            summary = "특정 옷 삭제",
+            description = "PathVariable으로 id를 받고, 해당 id 값을 가진 옷 삭제"
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Integer> deleteClothing(@PathVariable Long id, Authentication authentication){
+        return clothingService.deleteClothingById(id, authentication);
+    }
+
     /*
     @PostMapping("/upload")
     public ResponseEntity<ClothInfoDto> uploadClothingImage(Authentication authentication, @RequestParam("file") MultipartFile file){
