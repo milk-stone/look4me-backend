@@ -10,7 +10,7 @@ public enum TextileType {
 
     public static TextileType convertString(String textile){
         for (TextileType textileType : TextileType.values()) {
-            if (Objects.equals(textileType.name().toLowerCase(), textile)) {
+            if (Objects.equals(textileType.name().toLowerCase(), textile.toLowerCase())) {
                 return textileType;
             }
         }
