@@ -65,6 +65,9 @@ public class ClothingServiceImpl implements ClothingService {
             throw new ClothingNotFoundException("Clothing not found");
         }
         Clothing c = clothing.get();
+        if (!c.getUser().equals(validUser)){
+            throw new ClothingNotFoundException("Those clothes are not yours");
+        }
         return  new ResponseEntity<>(ClothInfoDto.toDto(c), HttpStatus.OK);
     }
 
@@ -81,6 +84,9 @@ public class ClothingServiceImpl implements ClothingService {
             throw new ClothingNotFoundException("Clothing not found");
         }
         Clothing c = clothing.get();
+        if (!c.getUser().equals(validUser)){
+            throw new ClothingNotFoundException("Those clothes are not yours");
+        }
         c.update(dto);
         clothingRepository.save(c);
         return new ResponseEntity<>(HttpStatus.OK);
