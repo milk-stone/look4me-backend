@@ -1,6 +1,6 @@
 package com.itec0401.backend.domain.clothing.entity;
 
-import com.itec0401.backend.domain.clothing.dto.ClothUpdateRequestDto;
+import com.itec0401.backend.domain.clothing.dto.ClothRequestDto;
 import com.itec0401.backend.domain.clothing.entity.type.*;
 import com.itec0401.backend.domain.coordinationclothing.entity.CoordinationClothing;
 import com.itec0401.backend.domain.user.entity.User;
@@ -56,7 +56,7 @@ public class Clothing {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void update(ClothUpdateRequestDto dto){
+    public void update(ClothRequestDto dto){
         this.imageUri = imageUri;
         this.name = name;
         this.mainCategory = Category.convertString(dto.getMainCategory());

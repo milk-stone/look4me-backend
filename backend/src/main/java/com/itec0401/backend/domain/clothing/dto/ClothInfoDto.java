@@ -9,6 +9,7 @@ import lombok.Getter;
 public class ClothInfoDto {
     /* 용도 : 이미지를 Python 서버로 보냈을 때, 파이썬 서버가 보내준 정보를 담는 DTO */
     /* Frontend -> Python -> Frontend -> Spring Boot */
+    private Long id;
     private String imageUri;
     private String name;
     private String mainCategory;
@@ -23,6 +24,7 @@ public class ClothInfoDto {
 
     public static ClothInfoDto toDto(Clothing clothing){
         return ClothInfoDto.builder()
+                .id(clothing.getId())
                 .imageUri(clothing.getImageUri())
                 .name(clothing.getName())
                 .mainCategory(clothing.getSubCategory().getParentCategoryName())

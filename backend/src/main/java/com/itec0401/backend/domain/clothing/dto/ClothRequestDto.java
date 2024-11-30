@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ClothUpdateRequestDto {
+public class ClothRequestDto {
+    // Create, Update 둘 다 이 형식
     private String imageUri;
     private String name;
     private String mainCategory;
