@@ -57,8 +57,8 @@ public class Clothing {
     private User user;
 
     public void update(ClothRequestDto dto){
-        this.imageUri = imageUri;
-        this.name = name;
+        this.imageUri = dto.getImageUri();
+        this.name = dto.getName();
         this.mainCategory = Category.convertString(dto.getMainCategory());
         this.subCategory = Category.convertString(dto.getSubCategory());
         this.baseColor = ColorType.convertString(dto.getBaseColor());
@@ -67,7 +67,7 @@ public class Clothing {
         this.pattern = PatternType.convertString(dto.getPattern());
         this.season = SeasonType.convertString(dto.getSeason());
         this.style = StyleType.convertString(dto.getStyle());
-        this.description = description;
+        this.description = dto.getDescription();
     }
 
     @Builder
