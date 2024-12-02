@@ -24,11 +24,11 @@ public class ClothingServiceImpl implements ClothingService {
     private final ClothingRepository clothingRepository;
     private final UserService userService;
 
-    public ResponseEntity<ClothInfoDto> createClothing(ClothRequestDto dto, Authentication authentication) {
+    public ResponseEntity<Void> createClothing(ClothRequestDto dto, Authentication authentication) {
         // 권한 확인
         Optional<User> user = userService.checkPermission(authentication);
         if (user.isEmpty())
-            return new ResponseEntity<>(ClothInfoDto.builder().build(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         User validUser = user.get();
         Clothing c = Clothing.builder()
                 .imageUri(dto.getImageUri())
@@ -47,7 +47,7 @@ public class ClothingServiceImpl implements ClothingService {
 
         clothingRepository.save(c);
 
-        return new ResponseEntity<>(ClothInfoDto.toDto(c), HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ClothingServiceImpl implements ClothingService {
         if (!c.getUser().equals(validUser)){
             throw new ClothingNotFoundException("Those clothes are not yours");
         }
-        return  new ResponseEntity<>(ClothInfoDto.toDto(c), HttpStatus.OK);
+        return new ResponseEntity<>(ClothInfoDto.toDto(c), HttpStatus.OK);
     }
 
     @Override

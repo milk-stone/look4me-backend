@@ -28,7 +28,7 @@ public class ClothingController {
             }
     )
     @PostMapping("/upload")
-    public ResponseEntity<ClothInfoDto> createClothing(@RequestBody ClothRequestDto dto, Authentication authentication){
+    public ResponseEntity<Void> createClothing(@RequestBody ClothRequestDto dto, Authentication authentication){
         return clothingService.createClothing(dto, authentication);
     }
 
