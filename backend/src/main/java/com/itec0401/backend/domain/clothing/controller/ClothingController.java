@@ -2,7 +2,7 @@ package com.itec0401.backend.domain.clothing.controller;
 
 
 import com.itec0401.backend.domain.clothing.dto.ClothInfoDto;
-import com.itec0401.backend.domain.clothing.dto.ClothUpdateRequestDto;
+import com.itec0401.backend.domain.clothing.dto.ClothRequestDto;
 import com.itec0401.backend.domain.clothing.service.ClothingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,8 +28,8 @@ public class ClothingController {
             }
     )
     @PostMapping("/upload")
-    public ResponseEntity<ClothInfoDto> createClothing(@RequestBody ClothInfoDto clothInfoDto, Authentication authentication){
-        return clothingService.createClothing(clothInfoDto, authentication);
+    public ResponseEntity<Void> createClothing(@RequestBody ClothRequestDto dto, Authentication authentication){
+        return clothingService.createClothing(dto, authentication);
     }
 
     @Operation(
@@ -47,7 +46,7 @@ public class ClothingController {
             description = "PathVariable로 id 값을 받고, RequestBody로 업데이트 내용을 받으면 그 옷을 찾아서 내용 수정"
     )
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateClothing(@PathVariable Long id, @RequestBody ClothUpdateRequestDto dto, Authentication authentication){
+    public ResponseEntity<Void> updateClothing(@PathVariable Long id, @RequestBody ClothRequestDto dto, Authentication authentication){
         return clothingService.updateClothing(id, dto, authentication);
     }
 

@@ -1,6 +1,6 @@
 package com.itec0401.backend.domain.clothing.entity;
 
-import com.itec0401.backend.domain.clothing.dto.ClothUpdateRequestDto;
+import com.itec0401.backend.domain.clothing.dto.ClothRequestDto;
 import com.itec0401.backend.domain.clothing.entity.type.*;
 import com.itec0401.backend.domain.coordinationclothing.entity.CoordinationClothing;
 import com.itec0401.backend.domain.user.entity.User;
@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,15 +51,15 @@ public class Clothing {
     private String description;
 
     @OneToMany(mappedBy = "clothing")
-    private List<CoordinationClothing> coordinationClothingList;
+    private List<CoordinationClothing> coordinationClothingList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void update(ClothUpdateRequestDto dto){
-        this.imageUri = imageUri;
-        this.name = name;
+    public void update(ClothRequestDto dto){
+        this.imageUri = dto.getImageUri();
+        this.name = dto.getName();
         this.mainCategory = Category.convertString(dto.getMainCategory());
         this.subCategory = Category.convertString(dto.getSubCategory());
         this.baseColor = ColorType.convertString(dto.getBaseColor());
@@ -67,7 +68,7 @@ public class Clothing {
         this.pattern = PatternType.convertString(dto.getPattern());
         this.season = SeasonType.convertString(dto.getSeason());
         this.style = StyleType.convertString(dto.getStyle());
-        this.description = description;
+        this.description = dto.getDescription();
     }
 
     @Builder
