@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -147,5 +148,24 @@ public class CoordinationServiceImpl implements CoordinationService {
             throw new DataManipulationException("Error while manipulating String to Json");
         }
         return response;
+    }
+
+    @Override
+    public ResponseEntity<List<CodiInfo>> getAllCodiInfos(Authentication authentication){
+        Optional<User> user = userService.checkPermission(authentication);
+        if (user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        User validUser = user.get();
+
+        List<CodiInfo> codiInfoList = new ArrayList<>();
+        for (Coordination coordination : validUser.getCoordinationList()){
+            codiInfoList.add(CodiInfo.builder()
+                            .id(coordination.getId())
+                            .name(coordination.getName())
+                            .description(coordination.getDescription())
+                            .hashtags(coordination.getHashtags()).build());
+        }
+        return new ResponseEntity<>(codiInfoList, HttpStatus.OK);
     }
 }
