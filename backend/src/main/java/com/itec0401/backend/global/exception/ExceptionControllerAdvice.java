@@ -20,4 +20,16 @@ public class ExceptionControllerAdvice {
         log.info("ClothingNotFoundException: {}", e.getMessage());
         return new ResponseEntity<>(ErrorResult.builder().code("400").message("ClothingNotFound-EX").build(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NullResponseFromApiException.class)
+    public ResponseEntity<ErrorResult> NullResponseFromApiException(NullResponseFromApiException e) {
+        log.info("NullResponseFromApiException: {}", e.getMessage());
+        return new ResponseEntity<>(ErrorResult.builder().code("400").message("NullResponseFromApi-EX").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataManipulationException.class)
+    public ResponseEntity<ErrorResult> DataManipulationException(DataManipulationException e) {
+        log.info("DataManipulationException: {}", e.getMessage());
+        return new ResponseEntity<>(ErrorResult.builder().code("400").message("DataManipulation-EX").build(), HttpStatus.BAD_REQUEST);
+    }
 }
