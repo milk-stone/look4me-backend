@@ -12,4 +12,5 @@ public interface CoordinationService {
     ResponseEntity<Void> coordRecommendBasic(BasicCodiRequestToSpring dto, Authentication authentication);
     ResponseEntity<Void> coordRecommendUsingNaturalLanguage(NLCodiRequestToSpring dto, Authentication authentication);
     ResponseEntity<List<CodiInfo>> getAllCodiInfos(Authentication authentication);
+    ResponseEntity<Integer> deleteCodiById(Long id, Authentication authentication);
 }

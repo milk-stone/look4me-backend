@@ -32,4 +32,10 @@ public class ExceptionControllerAdvice {
         log.info("DataManipulationException: {}", e.getMessage());
         return new ResponseEntity<>(ErrorResult.builder().code("400").message("DataManipulation-EX").build(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(CoordinationNotFoundException.class)
+    public ResponseEntity<ErrorResult> CoordinationNotFoundException(CoordinationNotFoundException e) {
+        log.info("CoordinationNotFoundException: {}", e.getMessage());
+        return new ResponseEntity<>(ErrorResult.builder().code("400").message("CoordinationNotFound-EX").build(), HttpStatus.BAD_REQUEST);
+    }
 }

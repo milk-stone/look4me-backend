@@ -32,4 +32,9 @@ public class CoordinationController {
         return coordinationService.getAllCodiInfos(authentication);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Integer> deleteCoordinationInfo(@PathVariable("id") Long id, Authentication authentication){
+        return coordinationService.deleteCodiById(id, authentication);
+    }
+
 }

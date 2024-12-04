@@ -7,9 +7,12 @@ import com.itec0401.backend.domain.clothing.service.ClothingService;
 import com.itec0401.backend.domain.coordination.dto.*;
 import com.itec0401.backend.domain.coordination.entity.Coordination;
 import com.itec0401.backend.domain.coordination.repository.CoordinationRepository;
+import com.itec0401.backend.domain.coordinationclothing.entity.CoordinationClothing;
+import com.itec0401.backend.domain.coordinationclothing.repository.CoordinationClothingRepository;
 import com.itec0401.backend.domain.coordinationclothing.service.CoordinationClothingService;
 import com.itec0401.backend.domain.user.entity.User;
 import com.itec0401.backend.domain.user.service.UserService;
+import com.itec0401.backend.global.exception.CoordinationNotFoundException;
 import com.itec0401.backend.global.exception.DataManipulationException;
 import com.itec0401.backend.global.exception.NullResponseFromApiException;
 import com.itec0401.backend.global.exception.UserNotFoundException;
@@ -167,5 +170,23 @@ public class CoordinationServiceImpl implements CoordinationService {
                             .hashtags(coordination.getHashtags()).build());
         }
         return new ResponseEntity<>(codiInfoList, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Integer> deleteCodiById(Long id, Authentication authentication){
+        Optional<User> user = userService.checkPermission(authentication);
+        if (user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        User validUser = user.get();
+
+        Optional<Coordination> c = coordinationRepository.findByCoordinationId(id);
+        if (c.isEmpty()){
+            throw new CoordinationNotFoundException("Coordination not found");
+        }
+        Coordination coordination = c.get();
+        coordinationClothingService.deleteCoordinationClothing(coordination.getCoordinationClothingList());
+        return new ResponseEntity<>(coordinationRepository.deleteByTwoId(validUser.getId(), id), HttpStatus.OK);
     }
 }

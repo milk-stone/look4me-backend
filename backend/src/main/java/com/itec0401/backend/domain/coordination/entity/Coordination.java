@@ -29,7 +29,7 @@ public class Coordination extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "coordination")
+    @OneToMany(mappedBy = "coordination", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CoordinationClothing> coordinationClothingList;
 
     @Builder

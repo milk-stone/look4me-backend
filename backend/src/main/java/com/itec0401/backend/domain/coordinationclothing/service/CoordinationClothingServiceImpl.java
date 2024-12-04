@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CoordinationClothingServiceImpl implements CoordinationClothingService {
@@ -21,5 +23,13 @@ public class CoordinationClothingServiceImpl implements CoordinationClothingServ
         // Coordination 과 Clothing 에도 중간테이블 연결 정보 추가
 //        coordination.getCoordinationClothingList().add(coordinationClothing);
 //        clothing.getCoordinationClothingList().add(coordinationClothing);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCoordinationClothing(List<CoordinationClothing> coordinationClothingList) {
+        for (CoordinationClothing coordinationClothing : coordinationClothingList) {
+            coordinationClothingRepository.deleteById(coordinationClothing.getId());
+        }
     }
 }
