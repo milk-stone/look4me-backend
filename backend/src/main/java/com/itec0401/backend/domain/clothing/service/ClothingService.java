@@ -18,4 +18,5 @@ public interface ClothingService {
     ResponseEntity<Integer> deleteClothingById(Long id, Authentication authentication);
     List<ClothingData> addClothingInfo(List<Long> clothingIds);
     Clothing getClothingEntity(Long id, Authentication authentication);
+    List<ClothInfoDto> getClothingDetails(Long user_id, Long coordination_id);
 }

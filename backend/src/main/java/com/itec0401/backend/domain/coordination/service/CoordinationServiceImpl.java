@@ -189,4 +189,29 @@ public class CoordinationServiceImpl implements CoordinationService {
         coordinationClothingService.deleteCoordinationClothing(coordination.getCoordinationClothingList());
         return new ResponseEntity<>(coordinationRepository.deleteByTwoId(validUser.getId(), id), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<CodiDetails> getCoordinationDetails(Long id, Authentication authentication){
+        Optional<User> user = userService.checkPermission(authentication);
+        if (user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        User validUser = user.get();
+        Optional<Coordination> c = coordinationRepository.findByCoordinationId(id);
+        if (c.isEmpty()){
+            throw new CoordinationNotFoundException("Coordination not found");
+        }
+        Coordination coordination = c.get();
+        if (!coordination.getUser().equals(validUser)){
+            throw new CoordinationNotFoundException("User does not belong to this coordination");
+        }
+
+        return new ResponseEntity<>(CodiDetails.builder()
+                .id(coordination.getId())
+                .name(coordination.getName())
+                .description(coordination.getDescription())
+                .hashtags(coordination.getHashtags())
+                .clothingList(clothingService.getClothingDetails(validUser.getId(), id))
+                .build(), HttpStatus.OK);
+    }
 }

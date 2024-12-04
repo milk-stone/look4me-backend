@@ -1,6 +1,7 @@
 package com.itec0401.backend.domain.coordination.controller;
 
 import com.itec0401.backend.domain.coordination.dto.BasicCodiRequestToSpring;
+import com.itec0401.backend.domain.coordination.dto.CodiDetails;
 import com.itec0401.backend.domain.coordination.dto.CodiInfo;
 import com.itec0401.backend.domain.coordination.dto.NLCodiRequestToSpring;
 import com.itec0401.backend.domain.coordination.service.CoordinationService;
@@ -35,6 +36,11 @@ public class CoordinationController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteCoordinationInfo(@PathVariable("id") Long id, Authentication authentication){
         return coordinationService.deleteCodiById(id, authentication);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CodiDetails> getCoordinationDetails(@PathVariable("id") Long id, Authentication authentication){
+        return coordinationService.getCoordinationDetails(id, authentication);
     }
 
 }

@@ -148,4 +148,13 @@ public class ClothingServiceImpl implements ClothingService {
         }
         return clothing.get();
     }
+
+    @Override
+    public List<ClothInfoDto> getClothingDetails(Long user_id, Long coordination_id){
+        List<ClothInfoDto> clothInfoDtos = new ArrayList<>();
+        for (Clothing clothing : clothingRepository.findCodiDetails(user_id, coordination_id)){
+            clothInfoDtos.add(ClothInfoDto.toDto(clothing));
+        }
+        return clothInfoDtos;
+    }
 }
