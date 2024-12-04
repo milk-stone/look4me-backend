@@ -21,7 +21,7 @@ public class Coordination extends BaseEntity {
 
     private String name;
 
-    private String descrition;
+    private String description;
     // hashtags 공백 두고 String concat 해야할 듯, hashtag 테이블로 떼기엔 조금 과함.
     private String hashtags;
 
@@ -33,9 +33,9 @@ public class Coordination extends BaseEntity {
     private List<CoordinationClothing> coordinationClothingList;
 
     @Builder
-    public Coordination(String name, String descrition, List<String> hashtags, User user) {
+    public Coordination(String name, String description, List<String> hashtags, User user) {
         this.name = name;
-        this.descrition = descrition;
+        this.description = description;
         this.hashtags = String.join(",", hashtags);
         this.user = user;
     }

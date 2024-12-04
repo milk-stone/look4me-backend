@@ -68,7 +68,7 @@ public class CoordinationServiceImpl implements CoordinationService {
         for (CodiResponse temp : apiResults.getCodis()){
             Coordination coordination = Coordination.builder()
                     .name(temp.getName())
-                    .descrition(temp.getDescription())
+                    .description(temp.getDescription())
                     .hashtags(temp.getHashtags())
                     .user(validUser)
                     .build();
@@ -121,7 +121,7 @@ public class CoordinationServiceImpl implements CoordinationService {
         // 받아온 내용을 기반으로 Coordination 엔티티, CoordinationClothing 엔티티 생성
         Coordination coordination = Coordination.builder()
                 .name(apiResult.getName())
-                .descrition(apiResult.getDescription())
+                .description(apiResult.getDescription())
                 .hashtags(apiResult.getHashtags())
                 .user(validUser)
                 .build();
