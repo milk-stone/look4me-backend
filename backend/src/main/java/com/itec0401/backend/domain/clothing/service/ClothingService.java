@@ -3,6 +3,8 @@ package com.itec0401.backend.domain.clothing.service;
 
 import com.itec0401.backend.domain.clothing.dto.ClothInfoDto;
 import com.itec0401.backend.domain.clothing.dto.ClothRequestDto;
+import com.itec0401.backend.domain.clothing.entity.Clothing;
+import com.itec0401.backend.domain.coordination.dto.ClothingData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
@@ -14,4 +16,6 @@ public interface ClothingService {
     ResponseEntity<Void> updateClothing(Long id, ClothRequestDto dto, Authentication authentication);
     ResponseEntity<List<ClothInfoDto>> getAllClothings(Authentication authentication);
     ResponseEntity<Integer> deleteClothingById(Long id, Authentication authentication);
+    List<ClothingData> addClothingInfo(List<Long> clothingIds);
+    Clothing getClothingEntity(Long id, Authentication authentication);
 }

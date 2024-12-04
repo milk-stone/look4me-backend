@@ -4,10 +4,12 @@ import com.itec0401.backend.domain.clothing.dto.ClothInfoDto;
 import com.itec0401.backend.domain.clothing.dto.ClothRequestDto;
 import com.itec0401.backend.domain.clothing.entity.Clothing;
 import com.itec0401.backend.domain.clothing.repository.ClothingRepository;
+import com.itec0401.backend.domain.coordination.dto.ClothingData;
 import com.itec0401.backend.domain.user.entity.User;
 import com.itec0401.backend.domain.user.service.UserService;
 import com.itec0401.backend.global.exception.ClothingNotFoundException;
 import com.itec0401.backend.global.exception.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ public class ClothingServiceImpl implements ClothingService {
     private final ClothingRepository clothingRepository;
     private final UserService userService;
 
+    @Transactional
     public ResponseEntity<Void> createClothing(ClothRequestDto dto, Authentication authentication) {
         // 권한 확인
         Optional<User> user = userService.checkPermission(authentication);
@@ -70,6 +73,7 @@ public class ClothingServiceImpl implements ClothingService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Void> updateClothing(Long id, ClothRequestDto dto, Authentication authentication) {
         Optional<User> user = userService.checkPermission(authentication);
         if (user.isEmpty()) {
@@ -106,6 +110,7 @@ public class ClothingServiceImpl implements ClothingService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Integer> deleteClothingById(Long id, Authentication authentication) {
         Optional<User> user = userService.checkPermission(authentication);
         if (user.isEmpty()) {
@@ -114,5 +119,33 @@ public class ClothingServiceImpl implements ClothingService {
         User validUser = user.get();
 
         return new ResponseEntity<>(clothingRepository.deleteByTwoId(validUser.getId(), id), HttpStatus.OK);
+    }
+
+    @Override
+    public List<ClothingData> addClothingInfo(List<Long> clothingIds){
+        List<ClothingData> clothingDataDtos = new ArrayList<>();
+        for (Long id : clothingIds){
+            Optional<Clothing> clothing = clothingRepository.findById(id);
+            if (clothing.isEmpty()) {
+                throw new ClothingNotFoundException("Clothing not found");
+            }
+            Clothing c = clothing.get();
+            clothingDataDtos.add(ClothingData.toDto(c));
+        }
+        return clothingDataDtos;
+    }
+
+    @Override
+    public Clothing getClothingEntity(Long id, Authentication authentication) {
+        Optional<User> user = userService.checkPermission(authentication);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        User validUser = user.get();
+        Optional<Clothing> clothing = clothingRepository.findByClothingId(id);
+        if (clothing.isEmpty()) {
+            throw new ClothingNotFoundException("Clothing not found");
+        }
+        return clothing.get();
     }
 }

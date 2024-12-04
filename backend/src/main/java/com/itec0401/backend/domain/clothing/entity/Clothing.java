@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,7 +51,7 @@ public class Clothing {
     private String description;
 
     @OneToMany(mappedBy = "clothing")
-    private List<CoordinationClothing> coordinationClothingList;
+    private List<CoordinationClothing> coordinationClothingList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
