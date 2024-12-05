@@ -2,7 +2,7 @@ package com.itec0401.backend.domain.coordination.controller;
 
 import com.itec0401.backend.domain.coordination.dto.BasicCodiRequestToSpring;
 import com.itec0401.backend.domain.coordination.dto.CodiDetails;
-import com.itec0401.backend.domain.coordination.dto.CodiInfo;
+import com.itec0401.backend.domain.coordination.dto.AllCodiInfo;
 import com.itec0401.backend.domain.coordination.dto.NLCodiRequestToSpring;
 import com.itec0401.backend.domain.coordination.service.CoordinationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,7 +45,7 @@ public class CoordinationController {
             description = "코디의 상세 정보가 열람되지는 않음. 추후 수정해야할 수도...(이미지 정보를 같이 반환하는 방향으로..)"
     )
     @GetMapping
-    public ResponseEntity<List<CodiInfo>> getAllCoordinationInfos(Authentication authentication){
+    public ResponseEntity<List<AllCodiInfo>> getAllCoordinationInfos(Authentication authentication){
         return coordinationService.getAllCodiInfos(authentication);
     }
 

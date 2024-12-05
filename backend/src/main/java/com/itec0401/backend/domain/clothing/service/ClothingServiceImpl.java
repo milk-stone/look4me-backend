@@ -157,4 +157,13 @@ public class ClothingServiceImpl implements ClothingService {
         }
         return clothInfoDtos;
     }
+
+    @Override
+    public List<String> getClothingImages(Long user_id, Long coordination_id){
+        List<String> clothingImages = new ArrayList<>();
+        for (Clothing clothing : clothingRepository.findCodiDetails(user_id, coordination_id)){
+            clothingImages.add(clothing.getImageUri());
+        }
+        return clothingImages;
+    }
 }

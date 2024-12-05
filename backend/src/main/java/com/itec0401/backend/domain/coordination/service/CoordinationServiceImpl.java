@@ -1,14 +1,11 @@
 package com.itec0401.backend.domain.coordination.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itec0401.backend.domain.clothing.service.ClothingService;
 import com.itec0401.backend.domain.coordination.dto.*;
 import com.itec0401.backend.domain.coordination.entity.Coordination;
 import com.itec0401.backend.domain.coordination.repository.CoordinationRepository;
-import com.itec0401.backend.domain.coordinationclothing.entity.CoordinationClothing;
-import com.itec0401.backend.domain.coordinationclothing.repository.CoordinationClothingRepository;
 import com.itec0401.backend.domain.coordinationclothing.service.CoordinationClothingService;
 import com.itec0401.backend.domain.user.entity.User;
 import com.itec0401.backend.domain.user.service.UserService;
@@ -18,9 +15,7 @@ import com.itec0401.backend.global.exception.NullResponseFromApiException;
 import com.itec0401.backend.global.exception.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -154,22 +149,25 @@ public class CoordinationServiceImpl implements CoordinationService {
     }
 
     @Override
-    public ResponseEntity<List<CodiInfo>> getAllCodiInfos(Authentication authentication){
+    public ResponseEntity<List<AllCodiInfo>> getAllCodiInfos(Authentication authentication){
         Optional<User> user = userService.checkPermission(authentication);
         if (user.isEmpty()){
             throw new UserNotFoundException("User not found");
         }
         User validUser = user.get();
 
-        List<CodiInfo> codiInfoList = new ArrayList<>();
+        List<AllCodiInfo> allCodiInfoList = new ArrayList<>();
         for (Coordination coordination : validUser.getCoordinationList()){
-            codiInfoList.add(CodiInfo.builder()
+            allCodiInfoList.add(AllCodiInfo.builder()
                             .id(coordination.getId())
                             .name(coordination.getName())
                             .description(coordination.getDescription())
-                            .hashtags(coordination.getHashtags()).build());
+                            .hashtags(coordination.getHashtags())
+                            .createdAt(coordination.getCreatedAt())
+                            .clothingImages(clothingService.getClothingImages(validUser.getId(), coordination.getId()))
+                            .build());
         }
-        return new ResponseEntity<>(codiInfoList, HttpStatus.OK);
+        return new ResponseEntity<>(allCodiInfoList, HttpStatus.OK);
     }
 
     @Override
@@ -211,6 +209,7 @@ public class CoordinationServiceImpl implements CoordinationService {
                 .name(coordination.getName())
                 .description(coordination.getDescription())
                 .hashtags(coordination.getHashtags())
+                .createdAt(coordination.getCreatedAt())
                 .clothingList(clothingService.getClothingDetails(validUser.getId(), id))
                 .build(), HttpStatus.OK);
     }
