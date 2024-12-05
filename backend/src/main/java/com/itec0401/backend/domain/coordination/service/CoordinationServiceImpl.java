@@ -156,17 +156,18 @@ public class CoordinationServiceImpl implements CoordinationService {
         }
         User validUser = user.get();
 
-        List<AllCodiInfo> codiInfoList = new ArrayList<>();
+        List<AllCodiInfo> allCodiInfoList = new ArrayList<>();
         for (Coordination coordination : validUser.getCoordinationList()){
-            codiInfoList.add(AllCodiInfo.builder()
+            allCodiInfoList.add(AllCodiInfo.builder()
                             .id(coordination.getId())
                             .name(coordination.getName())
                             .description(coordination.getDescription())
                             .hashtags(coordination.getHashtags())
+                            .createdAt(coordination.getCreatedAt())
                             .clothingImages(clothingService.getClothingImages(validUser.getId(), coordination.getId()))
                             .build());
         }
-        return new ResponseEntity<>(codiInfoList, HttpStatus.OK);
+        return new ResponseEntity<>(allCodiInfoList, HttpStatus.OK);
     }
 
     @Override
