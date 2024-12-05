@@ -211,6 +211,7 @@ public class CoordinationServiceImpl implements CoordinationService {
                 .name(coordination.getName())
                 .description(coordination.getDescription())
                 .hashtags(coordination.getHashtags())
+                .createdAt(coordination.getCreatedAt())
                 .clothingList(clothingService.getClothingDetails(validUser.getId(), id))
                 .build(), HttpStatus.OK);
     }
